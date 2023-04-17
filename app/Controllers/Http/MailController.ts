@@ -1,10 +1,13 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { validator, schema, rules } from "@ioc:Adonis/Core/Validator";
 import IsDisposable from "App/Services/IsDisposable";
+import Event from '@ioc:Adonis/Core/Event'
 
 export default class MailController {
   public async index({ request, response }: HttpContextContract) {
     const email = request.input("email");
+
+    Event.emit('new:request', null)
 
     //TO DO Validate If Request is Well Formed with Validators
     if (!email) {
@@ -41,6 +44,8 @@ export default class MailController {
 
   public async all({ request, response }: HttpContextContract) {
     const data = request.only(["emails"]);
+
+    Event.emit('new:request', null)
 
     //TO DO Validate If Request is Well Formed with Validators
     if (!data.emails) {
